@@ -12,7 +12,7 @@ The data consists of [insert description of data here]. It was collected from [i
 
 The repository contains the following files:
 
-- [insert file name here]: [insert description of file here]
+- [insert file name here]: OECD (2023), Inflation (CPI) (indicator). doi: 10.1787/eee82e6e-en (Accessed on 24 October 2023)
 - [insert file name here]: [insert description of file here]
 - [insert file name here]: [insert description of file here]
 
@@ -27,3 +27,4 @@ To use the data, [insert instructions on how to access and use the data here].
 ## Contact
 
 For any questions or concerns regarding the data, please contact [insert contact information here].
+
