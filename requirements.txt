@@ -2,3 +2,4 @@ pandas
 numpy
 matplotlib
 # sqlite3
+requests
