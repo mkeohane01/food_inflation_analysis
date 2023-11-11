@@ -1,1 +1,4 @@
 .venv/*
+
+data/LivestockMeat_Exports.csv
+data/LivestockMeat_Imports.csv
