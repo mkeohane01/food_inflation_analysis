@@ -4,3 +4,4 @@ matplotlib
 # sqlite3
 requests
 statsmodels
+beautifulsoup4
