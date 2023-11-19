@@ -2,29 +2,19 @@
 
 ## Overview
 
-This repository contains data related to [insert project name here]. The data is stored in [insert file format here] format and can be accessed using [insert software/tool name here].
-
-## Data Description
-
-The data consists of [insert description of data here]. It was collected from [insert source of data here] and has been preprocessed to [insert details of preprocessing here].
+The data consists of data used to build features for our food inflation prediction model. It was collected from various sources and each has been processed to be combined in to one timeseries to be passed in to our model for training.
 
 ## File Structure
 
 The repository contains the following files:
 
-- [insert file name here]: OECD (2023), Inflation (CPI) (indicator). doi: 10.1787/eee82e6e-en (Accessed on 24 October 2023)
-- [insert file name here]: [insert description of file here]
-- [insert file name here]: [insert description of file here]
-
-## Usage
-
-To use the data, [insert instructions on how to access and use the data here].
-
-## License
-
-[Insert license information here]
-
-## Contact
-
-For any questions or concerns regarding the data, please contact [insert contact information here].
+- **OCED_USA_FOOD_DATA.csv**
+    - Downloaded csv from the [OECD website](https://data.oecd.org/interest/long-term-interest-rates.htm) containing the CPI of food in US per month.
+- **stock_data.csv**
+    - Downloaded data from [macro trends](https://www.macrotrends.net/1319/dow-jones-100-year-historical-chart). Shows real and nominal stock prices for Dow Jones Industrial Average over time.
+- **gas_prices.csv** 
+    - Web-scraped data from [EIA](https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=pet&s=emm_epmr_pte_nus_dpg&f=m) of gas prices in US each month.
+- **LivestockMeat_[Import/Export].csv**
+    - Both csvs downloaded from [USDA](https://www.ers.usda.gov/data-products/livestock-and-meat-international-trade-data/livestock-and-meat-international-trade-data/#Monthly%20U.S.%20Livestock%20and%20Meat%20Trade%20by%20Country) showing meat exports and imports per year.
+    
 
