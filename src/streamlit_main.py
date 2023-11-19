@@ -7,11 +7,12 @@ import plotly.express as px
 import plotly.graph_objs as go
 # from your_model import predict_inflation 
 
-def predict_inflation(months):
+# funciton to predict 6 months of inflation rates
+def predict_inflation():
     # create dummy function to return df with index as month time series starting in 2023 and predicted rates
     future_data = pd.DataFrame()
-    future_data['Date'] = pd.date_range(start='2023-01-01', periods=months, freq='MS')
-    future_data['predicted_rates'] = np.random.rand(months)
+    future_data['Date'] = pd.date_range(start='2023-01-01', periods=6, freq='MS')
+    future_data['predicted_rates'] = np.random.rand(6)
     # return the df with index as Date and predicted rates as values
     return future_data
 
@@ -51,14 +52,14 @@ fig.update_layout(title='Food Inflation Rates',
                   yaxis_title='Inflation Rate (CPI)')
 
 # Create options for users to select prediciton horizon
-prediction_range = st.selectbox('Select Prediction Range (in months)', [1, 2, 3, 6, 12])
+# prediction_range = st.selectbox('Select Prediction Range (in months)', [1, 2, 3, 6, 12])
 
 # show the graph
 graph_placeholder.plotly_chart(fig, use_container_width=True)
 
 # Create a button to predict the inflation rates
 if st.button('Predict Food Inflation Rates'):
-    future_data = predict_inflation(prediction_range)
+    future_data = predict_inflation()
 
     # Create a new Plotly graph
     updated_fig = go.Figure()
