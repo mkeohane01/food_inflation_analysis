@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 # URL of the page
-url = "https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=pet&s=emm_epm0_pte_nus_dpg&f=m"
+url = "https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=pet&s=emm_epmr_pte_nus_dpg&f=m"
 
 # Send a GET request to the URL
 response = requests.get(url)
@@ -37,13 +37,13 @@ if response.status_code == 200:
     df = df.set_index('Year')
 
     # Convert the data to numeric values
-    df = df.apply(pd.to_numeric)
+    df = df.apply(pd.to_numeric, errors='coerce')
 
     # remove rows that are all NaN
     df = df.dropna(how='all')
 
     # edit 1993 data to move nans to first 3 months instead of last 3 columns
-    df.loc['1993'] = df.loc['1993'].shift(3)
+    df.loc['1990'] = df.loc['1990'].shift(7)
 
     # Display the DataFrame
     print(df)

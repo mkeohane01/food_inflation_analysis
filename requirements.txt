@@ -7,3 +7,4 @@ statsmodels
 beautifulsoup4
 streamlit
 plotly
+scikit-learn
