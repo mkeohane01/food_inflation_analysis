@@ -15,9 +15,13 @@ def predict_inflation(months):
     # return the df with index as Date and predicted rates as values
     return future_data
 
+# Set the page config to wide mode with a title
+st.set_page_config(layout="wide")
+
+# Set the title
 st.title('Food Inflation Prediction')
 
-# Load data from food_inflation_analysis.db data test_data
+# Load data from food_inflation_analysis.db database
 # connect to the sqlite database
 conn = sqlite3.connect('food_inflation_analysis.db')
 # get the data from the database
@@ -28,13 +32,9 @@ cpi_food_data['Date'] = pd.to_datetime(cpi_food_data['Date'])
 # sort by Date column
 cpi_food_data.sort_values(by='Date', inplace=True)
 # only keep data after Date 1990
-historical_data = cpi_food_data[cpi_food_data['Date'] >= '1990-01-01']
+historical_data = cpi_food_data[(cpi_food_data['Date'] >= '1990-01-01') & (cpi_food_data['Date'] < '2023-01-01')]
 # test data
-query = '''SELECT * FROM test_data'''
-test_data = pd.read_sql(query, conn)
-test_data['Date'] = pd.to_datetime(test_data['Date'])
-# sort by Date column
-test_data.sort_values(by='Date', inplace=True)
+test_data = cpi_food_data[(cpi_food_data['Date'] >= '2023-01-01')]
 # close the connection
 conn.close()
 
