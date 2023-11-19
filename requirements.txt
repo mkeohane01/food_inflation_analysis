@@ -5,3 +5,5 @@ matplotlib
 requests
 statsmodels
 beautifulsoup4
+streamlit
+plotly
