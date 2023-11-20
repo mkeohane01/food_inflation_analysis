@@ -4,7 +4,7 @@ Project using Deep Learning to predict changing Food Inflation prices. We use Un
 **To run:**
 ```bash
 pip install -r requirements.txt
-streamlit run src/streamlit_main.py
+streamlit run src/main.py
 ```
 
 ## Data Procesing
