@@ -41,7 +41,7 @@ def create_dataset(tables):
     # check the data types of the columns
     print(dfs['interest_rate']['Date'].dtype)
 
-    # 如果 'Date' 列的数据类型不是 datetime，将其转换为 datetime
+    # if the 'Date' column is not datetime, convert it to datetime
     if dfs['interest_rate']['Date'].dtype != 'datetime64[ns]':
         dfs['interest_rate']['Date'] = pd.to_datetime(dfs['interest_rate']['Date'])
 
