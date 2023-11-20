@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import sqlite3
 import plotly.express as px
 import plotly.graph_objs as go
+from sklearn.metrics import mean_squared_error
 # from your_model import predict_inflation 
 
 # funciton to predict 6 months of inflation rates
@@ -76,10 +77,16 @@ if st.button('Predict Food Inflation Rates'):
     updated_fig.add_trace(go.Scatter(x=future_data['Date'], y=future_data['predicted_rates'],
                              mode='lines+markers', name='Predicted Data', line=dict(color='red')))
     
+    # calculate the rmse
+    mse = mean_squared_error(test_data['CPI'][0:6], future_data['predicted_rates'])
+
     # Set graph layout
     updated_fig.update_layout(title='Food Inflation Rates', 
                     xaxis_title='Date', 
                     yaxis_title='Inflation Rate (CPI)')
+
+    # Display MSE
+    st.text(f'Mean Squared Error: {mse:.2f}')
 
     # show the graph
     graph_placeholder.plotly_chart(updated_fig, use_container_width=True)
