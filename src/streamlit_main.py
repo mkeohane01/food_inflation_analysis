@@ -43,7 +43,7 @@ conn.close()
 graph_placeholder = st.empty()
 # Create a Plotly graph
 fig = go.Figure()
-fig.add_trace(go.Scatter(x=historical_data['Date'], y=historical_data['Inflation'],
+fig.add_trace(go.Scatter(x=historical_data['Date'], y=historical_data['CPI'],
                          mode='lines+markers', name='Historical Data'))
 
 # Set graph layout
@@ -65,11 +65,11 @@ if st.button('Predict Food Inflation Rates'):
     updated_fig = go.Figure()
 
     # Add Historical Data Trace
-    updated_fig.add_trace(go.Scatter(x=historical_data['Date'], y=historical_data['Inflation'],
+    updated_fig.add_trace(go.Scatter(x=historical_data['Date'], y=historical_data['CPI'],
                                      mode='lines+markers', name='Historical Data'))
 
     # Add Test Data Trace
-    updated_fig.add_trace(go.Scatter(x=test_data['Date'], y=test_data['Inflation'],
+    updated_fig.add_trace(go.Scatter(x=test_data['Date'], y=test_data['CPI'],
                              mode='lines+markers', name='Test Data', line=dict(color='green')))
 
     # Add Predicted Data Trace
