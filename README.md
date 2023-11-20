@@ -1,5 +1,5 @@
 # Food Inflation Predictor
-Project using Deep Learning to predict changing Food Inflation prices. We use CPI as our target.
+Project using Deep Learning to predict changing Food Inflation prices. We use United States food CPI sourced from OECD as our target.
 
 **To run:**
 ```bash
@@ -12,17 +12,18 @@ Processed various data sets to use as features for our prediction model in the f
 
 Processing steps:
 
-1. 
+1. Load each data set in timeseries format per month or year. Some data was webscraped, pulled from API, or downloaded from csv.
 
-2.
+2. Fill in any missing value such as the gas_prices data by extrapolating surrounding data.
 
-3.
+3. Compare correlations between lagged data and the target, food CPI.
 
-4.
+4. Save the features that had the most impactful correlations to the database.
 
- 
 
 ## Model Structure
+
+Multivariate Multistep LSTM
 
 
 ## Repo Management
