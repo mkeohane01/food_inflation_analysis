@@ -21,11 +21,11 @@ def predict_inflation():
     ckpt_path = root_path / 'src' / 'model_cache' / 'LSTM.h5'
     
     #  6(n_steps_out) length list 
-    train_pred = get_prediction_train(n_steps_in, n_steps_out, data_path, ckpt_path)
+    train_prediction = get_prediction_train(n_steps_in, n_steps_out, data_path, ckpt_path)
     test_pred, future_pred = get_prediction_test_future(n_steps_in, n_steps_out, data_path, ckpt_path)
     
-    train_pred = [float(i) for i in train_pred]
-    print(len(train_pred))
+    # train_prediction = [float(i) for i in train_pred]
+
     # create df with index as month time series starting in 2023-10 and future predicted rates
     future_data = pd.DataFrame()
     future_data['Date'] = pd.date_range(start='2023-10-01', periods=6, freq='MS')
@@ -36,17 +36,17 @@ def predict_inflation():
     pred_data['Date'] = pd.date_range(start='2023-04-01', periods=6, freq='MS')
     pred_data['predicted_rates'] = test_pred
     # create df for predicted on train data
-    train_len = len(train_pred)
+    train_len = len(train_prediction)
     train_pred = pd.DataFrame()
     train_pred['Date'] = pd.date_range(start='1993-01-01', periods=train_len, freq='MS')
-    train_pred['predicted_rates'] = train_len
+    train_pred['predicted_rates'] = train_prediction
     return pred_data, future_data, train_pred
 
 # Set the page config to wide mode with a title
 st.set_page_config(layout="wide")
 
 # Set the title
-st.title('Food Inflation Prediction')
+st.title('USA Food Inflation (CPI) Prediction')
 
 # Load data from food_inflation_analysis.db database
 # connect to the sqlite database
@@ -73,7 +73,7 @@ fig.add_trace(go.Scatter(x=historical_data['Date'], y=historical_data['CPI'],
                          mode='lines+markers', name='Historical Data'))
 
 # Set graph layout
-fig.update_layout(title='Food Inflation Rates', 
+fig.update_layout(title='Food Inflation Rates Per Month', 
                   xaxis_title='Date', 
                   yaxis_title='Inflation Rate (CPI)')
 
