@@ -23,7 +23,17 @@ Processing steps:
 
 ## Model Structure
 
-Multivariate Multistep LSTM
+Adopted LSTM to coduct Multivariate Multistep time series prediction.
+
+Pipeline:
+
+1. Split the time-series data to train/test set.
+
+2. Define optimization objective as average MSE of 5-fold time-series cross-validation.
+
+3. Run 200 Optuna trials to find the optimal hyperparameters of LSTM by minimizing the objective.
+
+4. Use optimal hyperparameters and full training set to retrain the model and save the final model checkpoint.
 
 
 ## Repo Management
