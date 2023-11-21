@@ -8,6 +8,6 @@ beautifulsoup4
 streamlit
 plotly
 scikit-learn
-keras
-tensorflow
+keras==2.13.1
+tensorflow==2.13.0
 optuna
