@@ -11,3 +11,5 @@ scikit-learn
 keras==2.13.1
 tensorflow==2.13.0
 optuna
+transformers
+wordcloud
