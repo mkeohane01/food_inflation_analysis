@@ -5,17 +5,26 @@ import matplotlib.pyplot as plt
 import sqlite3
 import plotly.express as px
 import plotly.graph_objs as go
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 # from your_model import predict_inflation 
 
 # funciton to predict 6 months of inflation rates
 def predict_inflation():
     # create dummy function to return df with index as month time series starting in 2023 and predicted rates
     future_data = pd.DataFrame()
-    future_data['Date'] = pd.date_range(start='2023-01-01', periods=6, freq='MS')
+    future_data['Date'] = pd.date_range(start='2023-10-01', periods=6, freq='MS')
     future_data['predicted_rates'] = np.random.rand(6)
     # return the df with index as Date and predicted rates as values
-    return future_data
+    # create dummy function to return df with index as month time series starting in 2023 and predicted rates
+    pred_data = pd.DataFrame()
+    pred_data['Date'] = pd.date_range(start='2023-04-01', periods=6, freq='MS')
+    pred_data['predicted_rates'] = np.random.rand(6)
+    # predict test data
+    train_len = 387
+    train_pred = pd.DataFrame()
+    train_pred['Date'] = pd.date_range(start='1991-01-01', periods=train_len, freq='MS')
+    train_pred['predicted_rates'] = np.random.rand(train_len)
+    return pred_data, future_data, train_pred
 
 # Set the page config to wide mode with a title
 st.set_page_config(layout="wide")
@@ -34,9 +43,9 @@ cpi_food_data['Date'] = pd.to_datetime(cpi_food_data['Date'])
 # sort by Date column
 cpi_food_data.sort_values(by='Date', inplace=True)
 # only keep data after Date 1990
-historical_data = cpi_food_data[(cpi_food_data['Date'] >= '1990-01-01') & (cpi_food_data['Date'] < '2023-01-01')]
+historical_data = cpi_food_data[(cpi_food_data['Date'] >= '1990-01-01') & (cpi_food_data['Date'] < '2023-04-01')]
 # test data
-test_data = cpi_food_data[(cpi_food_data['Date'] >= '2023-01-01')]
+test_data = cpi_food_data[(cpi_food_data['Date'] >= '2023-04-01')]
 # close the connection
 conn.close()
 
@@ -60,7 +69,7 @@ graph_placeholder.plotly_chart(fig, use_container_width=True)
 
 # Create a button to predict the inflation rates
 if st.button('Predict Food Inflation Rates'):
-    future_data = predict_inflation()
+    pred_data, future_data, train_pred = predict_inflation()
 
     # Create a new Plotly graph
     updated_fig = go.Figure()
@@ -73,12 +82,27 @@ if st.button('Predict Food Inflation Rates'):
     updated_fig.add_trace(go.Scatter(x=test_data['Date'], y=test_data['CPI'],
                              mode='lines+markers', name='Test Data', line=dict(color='green')))
 
-    # Add Predicted Data Trace
+    # Add Predicted Test Data Trace
+    updated_fig.add_trace(go.Scatter(x=pred_data['Date'], y=pred_data['predicted_rates'],
+                             mode='lines+markers', name='Predicted Data - Test', line=dict(color='red')))
+
+    # Add predicted future data trace
     updated_fig.add_trace(go.Scatter(x=future_data['Date'], y=future_data['predicted_rates'],
-                             mode='lines+markers', name='Predicted Data', line=dict(color='red')))
+                             mode='lines+markers', name='Predicted Data - Future', line=dict(color='orange')))
     
-    # calculate the rmse
-    mse = mean_squared_error(test_data['CPI'][0:6], future_data['predicted_rates'])
+    # Add predicted test data trace
+    updated_fig.add_trace(go.Scatter(x=train_pred['Date'], y=train_pred['predicted_rates'],
+                             mode='lines+markers', name='Predicted Data - Train', line=dict(color='yellow')))
+    
+
+    # calculate the mse
+    mse_test = mean_squared_error(test_data['CPI'], pred_data['predicted_rates'])
+    train_dat = historical_data[(historical_data['Date'] >= train_pred['Date'].min()) & (historical_data['Date'] <= train_pred['Date'].max())]
+    mse_train = mean_squared_error(train_dat['CPI'], train_pred['predicted_rates'])
+
+    # calculate the MAPE
+    mape_test = mean_absolute_percentage_error(test_data['CPI'], pred_data['predicted_rates'])
+    mape_train = mean_absolute_percentage_error(train_dat['CPI'], train_pred['predicted_rates'])
 
     # Set graph layout
     updated_fig.update_layout(title='Food Inflation Rates', 
@@ -86,7 +110,11 @@ if st.button('Predict Food Inflation Rates'):
                     yaxis_title='Inflation Rate (CPI)')
 
     # Display MSE
-    st.text(f'Mean Squared Error: {mse:.2f}')
+    st.text(f'Test - Mean Squared Error: {mse_test:.2f}')
+    st.text(f'Train - Mean Squared Error: {mse_train:.2f}')
+    # Display MAPE
+    st.text(f'Test - Mean Absolute Percentage Error: {mape_test:.2f}')
+    st.text(f'Train - Mean Absolute Percentage Error: {mape_train:.2f}')
 
     # show the graph
     graph_placeholder.plotly_chart(updated_fig, use_container_width=True)
