@@ -25,7 +25,11 @@ def predict_inflation():
     test_pred, future_pred = get_prediction_test_future(n_steps_in, n_steps_out, data_path, ckpt_path)
     
     # train_prediction = [float(i) for i in train_pred]
-
+    # append last two years of train_prediction to test_pred
+    test_pred = np.concatenate((train_prediction[-24:], test_pred))
+    # remove last 24 months of train_prediction
+    train_prediction = train_prediction[:-24]
+   
     # create df with index as month time series starting in 2023-10 and future predicted rates
     future_data = pd.DataFrame()
     future_data['Date'] = pd.date_range(start='2023-10-01', periods=6, freq='MS')
@@ -33,7 +37,7 @@ def predict_inflation():
 
     # create df with index as month time series starting in 2023-4 and test predicted rates
     pred_data = pd.DataFrame()
-    pred_data['Date'] = pd.date_range(start='2023-04-01', periods=6, freq='MS')
+    pred_data['Date'] = pd.date_range(start='2021-04-01', periods=30, freq='MS')
     pred_data['predicted_rates'] = test_pred
     # create df for predicted on train data
     train_len = len(train_prediction)
@@ -59,9 +63,9 @@ cpi_food_data['Date'] = pd.to_datetime(cpi_food_data['Date'])
 # sort by Date column
 cpi_food_data.sort_values(by='Date', inplace=True)
 # only keep data after Date 1990
-historical_data = cpi_food_data[(cpi_food_data['Date'] >= '1990-01-01') & (cpi_food_data['Date'] < '2023-04-01')]
+historical_data = cpi_food_data[(cpi_food_data['Date'] >= '1990-01-01') & (cpi_food_data['Date'] < '2021-04-01')]
 # test data
-test_data = cpi_food_data[(cpi_food_data['Date'] >= '2023-04-01')]
+test_data = cpi_food_data[(cpi_food_data['Date'] >= '2021-04-01')]
 # close the connection
 conn.close()
 
