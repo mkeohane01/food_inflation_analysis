@@ -121,14 +121,15 @@ if st.button('Predict Food Inflation Rates'):
     mape_train = mean_absolute_percentage_error(train_dat['CPI'], train_pred['predicted_rates']) * 100
 
     # Set graph layout
-    updated_fig.update_layout(title='Food Inflation Rates', 
+    updated_fig.update_layout(title='Food Inflation Rates Per Month', 
                     xaxis_title='Date', 
                     yaxis_title='Inflation Rate (CPI)')
 
-    # Display MSE
-    st.text(f'Mean Squared Error: Test = {mse_test:.2f} | Train = {mse_train:.2f}')
     # Display MAPE
-    st.text(f'Mean Absolute Percentage Error: Test = {mape_test:.2f}% | Train = {mape_train:.2f}%')
+    st.text(f'Mean Absolute Percentage Error (MAPE): Test = {mape_test:.2f}% | Train = {mape_train:.2f}%')
 
+    # Display MSE
+    st.text(f'Mean Squared Error (MSE): Test = {mse_test:.2f} | Train = {mse_train:.2f}')
+    
     # show the graph
     graph_placeholder.plotly_chart(updated_fig, use_container_width=True)
