@@ -24,6 +24,11 @@ def create_dataset(tables):
     merged_df.rename({'real-price':'dow_jones_real-price'}, axis=1,inplace=True)
 
     # merged_df = pd.merge(merged_df, dfs['news_sentiments'], on='Date', how='outer')
+    # merged_df['PercentageNegative'] = merged_df['PercentageNegative'].fillna(0)
+    # merged_df['PercentageNeutral'] = merged_df['PercentageNeutral'].fillna(0)
+    # merged_df['PercentagePositive'] = merged_df['PercentagePositive'].fillna(0)
+    # merged_df['TotalSentiments'] = merged_df['TotalSentiments'].fillna(0)
+
 
     # check the data types of the columns
     print(merged_df['Date'].dtype)
