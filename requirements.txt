@@ -8,3 +8,6 @@ beautifulsoup4
 streamlit
 plotly
 scikit-learn
+keras
+tensorflow
+optuna

@@ -6,19 +6,33 @@ import sqlite3
 import plotly.express as px
 import plotly.graph_objs as go
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
+from get_prediction import get_prediction_train, get_prediction_test_future
+from pathlib import Path
+import os
 # from your_model import predict_inflation 
 
 # funciton to predict 6 months of inflation rates
 def predict_inflation():
+    
+    n_steps_in = 24
+    n_steps_out = 6
+    root_path = Path(os.getcwd())
+    data_path = root_path / 'data' / 'merged_data.csv'
+    ckpt_path = root_path / 'cache' / 'LSTM.keras'
+    
+    #  6(n_steps_out) length list 
+    train_pred = get_prediction_train(n_steps_in, n_steps_out, data_path, ckpt_path)
+    test_pred, future_pred = get_prediction_test_future(n_steps_in, n_steps_out, data_path, ckpt_path)
+    
     # create dummy function to return df with index as month time series starting in 2023 and predicted rates
     future_data = pd.DataFrame()
     future_data['Date'] = pd.date_range(start='2023-10-01', periods=6, freq='MS')
-    future_data['predicted_rates'] = np.random.rand(6)
+    future_data['predicted_rates'] = future_pred
     # return the df with index as Date and predicted rates as values
     # create dummy function to return df with index as month time series starting in 2023 and predicted rates
     pred_data = pd.DataFrame()
     pred_data['Date'] = pd.date_range(start='2023-04-01', periods=6, freq='MS')
-    pred_data['predicted_rates'] = np.random.rand(6)
+    pred_data['predicted_rates'] = test_pred
     # predict test data
     train_len = 387
     train_pred = pd.DataFrame()
