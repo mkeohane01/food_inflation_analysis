@@ -109,36 +109,32 @@ def train_model(n_steps_in, n_steps_out, data_path, output_path, n_trails, logge
     
     X_train, y_train = split_sequences(train, n_steps_in, n_steps_out)
     model.fit(X_train, y_train, epochs= EPOCHS, verbose=0)
-    model.save(output_path / 'LSTM.keras')
+    model.save(output_path / 'LSTM.h5')
     
     logger.info(f'********************** Done **********************')
 
     return study
 
             
-
+# DO NOT CHANGE THIS
 n_steps_in, n_steps_out = 24, 6
+
+
+#SET EPCOHS AND TRAILS
 EPOCHS = 150
 n_trails = 50
 
-TRAIN_MODEL = True
-TEST_PRED = False
-TRAIN_PRED = False
-
-
 # get data path
 root_path = Path(os.getcwd())
-data_path = root_path / "data"
+
 trial_time = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
 
-
-output_path = root_path / "LSTM_results" / trial_time
+data_path = root_path / "data" / "merged_data.csv"
+output_path = root_path / "results" / trial_time
 
 print(f"Output Path {output_path}")
-
 # initialize the output path for different trails
 output_path.mkdir(parents=True, exist_ok=True)
-
 
 # create logger
 log_file = output_path / ('train_%s.log' % trial_time)
