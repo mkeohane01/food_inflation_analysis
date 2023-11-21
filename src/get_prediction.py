@@ -6,7 +6,9 @@ import keras
 def get_prediction_train(n_steps_in, n_steps_out, data_path, ckpt_path):
     #load data
     
-    train,_ = load_data(data_path, n_steps_in, n_steps_out)
+    # train,_ = load_data(data_path, n_steps_in, n_steps_out)
+    train, test = load_data(data_path, n_steps_in, n_steps_out)
+    train = np.vstack((train, test[:-6, :]))
     X_train, _ = split_sequences(train, n_steps_in, n_steps_out)
     
     train_pred = []

@@ -18,7 +18,7 @@ def predict_inflation():
     n_steps_out = 6
     root_path = Path(os.getcwd())
     data_path = root_path / 'data' / 'merged_data.csv'
-    ckpt_path = root_path / 'src' / 'model_cache' / 'LSTM.h5'
+    ckpt_path = root_path / 'src' / 'model_cache' / 'WorkingLSTM.h5'
     
     #  6(n_steps_out) length list 
     train_prediction = get_prediction_train(n_steps_in, n_steps_out, data_path, ckpt_path)
@@ -38,7 +38,7 @@ def predict_inflation():
     # create df for predicted on train data
     train_len = len(train_prediction)
     train_pred = pd.DataFrame()
-    train_pred['Date'] = pd.date_range(start='1994-09-01', periods=train_len, freq='MS')
+    train_pred['Date'] = pd.date_range(start='1992-09-01', periods=train_len, freq='MS')
     train_pred['predicted_rates'] = train_prediction
     return pred_data, future_data, train_pred
 
