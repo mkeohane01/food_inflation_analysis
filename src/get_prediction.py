@@ -30,7 +30,7 @@ def get_prediction_test_future(n_steps_in, n_steps_out, data_path, ckpt_path):
     X_test, _ = split_sequences(test, n_steps_in, n_steps_out)
     X_future = test[-n_steps_in:, 1:].reshape((1, n_steps_in, n_features))
 
-    model = keras.models.load_model(ckpt_path / 'LSTM.keras')
+    model = keras.models.load_model(ckpt_path)
     test_pred = model.predict(X_test)[0]
     future_pred = model.predict(X_future)[0]
     

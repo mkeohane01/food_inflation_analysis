@@ -18,12 +18,14 @@ def predict_inflation():
     n_steps_out = 6
     root_path = Path(os.getcwd())
     data_path = root_path / 'data' / 'merged_data.csv'
-    ckpt_path = root_path / 'src' / 'model_cache' / 'LSTM.keras'
+    ckpt_path = root_path / 'src' / 'model_cache' / 'LSTM.h5'
     
     #  6(n_steps_out) length list 
     train_pred = get_prediction_train(n_steps_in, n_steps_out, data_path, ckpt_path)
     test_pred, future_pred = get_prediction_test_future(n_steps_in, n_steps_out, data_path, ckpt_path)
     
+    train_pred = [float(i) for i in train_pred]
+    print(len(train_pred))
     # create df with index as month time series starting in 2023-10 and future predicted rates
     future_data = pd.DataFrame()
     future_data['Date'] = pd.date_range(start='2023-10-01', periods=6, freq='MS')
@@ -34,10 +36,10 @@ def predict_inflation():
     pred_data['Date'] = pd.date_range(start='2023-04-01', periods=6, freq='MS')
     pred_data['predicted_rates'] = test_pred
     # create df for predicted on train data
-    train_len = 387
+    train_len = len(train_pred)
     train_pred = pd.DataFrame()
-    train_pred['Date'] = pd.date_range(start='1991-01-01', periods=train_len, freq='MS')
-    train_pred['predicted_rates'] = np.random.rand(train_len)
+    train_pred['Date'] = pd.date_range(start='1993-01-01', periods=train_len, freq='MS')
+    train_pred['predicted_rates'] = train_len
     return pred_data, future_data, train_pred
 
 # Set the page config to wide mode with a title
@@ -106,7 +108,7 @@ if st.button('Predict Food Inflation Rates'):
     
     # Add predicted test data trace
     updated_fig.add_trace(go.Scatter(x=train_pred['Date'], y=train_pred['predicted_rates'],
-                             mode='lines+markers', name='Predicted Data - Train', line=dict(color='yellow')))
+                             mode='lines+markers', name='Predicted Data - Train', line=dict(color='purple')))
     
 
     # calculate the mse
@@ -115,8 +117,8 @@ if st.button('Predict Food Inflation Rates'):
     mse_train = mean_squared_error(train_dat['CPI'], train_pred['predicted_rates'])
 
     # calculate the MAPE
-    mape_test = mean_absolute_percentage_error(test_data['CPI'], pred_data['predicted_rates'])
-    mape_train = mean_absolute_percentage_error(train_dat['CPI'], train_pred['predicted_rates'])
+    mape_test = mean_absolute_percentage_error(test_data['CPI'], pred_data['predicted_rates']) * 100
+    mape_train = mean_absolute_percentage_error(train_dat['CPI'], train_pred['predicted_rates']) * 100
 
     # Set graph layout
     updated_fig.update_layout(title='Food Inflation Rates', 
@@ -124,9 +126,9 @@ if st.button('Predict Food Inflation Rates'):
                     yaxis_title='Inflation Rate (CPI)')
 
     # Display MSE
-    st.text(f'Mean Squared Error: Test - {mse_test:.2f} | Train - {mse_train:.2f}')
+    st.text(f'Mean Squared Error: Test = {mse_test:.2f} | Train = {mse_train:.2f}')
     # Display MAPE
-    st.text(f'Mean Absolute Percentage Error: Test - {mape_test:.2f} | Train - {mape_train:.2f}')
+    st.text(f'Mean Absolute Percentage Error: Test = {mape_test:.2f}% | Train = {mape_train:.2f}%')
 
     # show the graph
     graph_placeholder.plotly_chart(updated_fig, use_container_width=True)
