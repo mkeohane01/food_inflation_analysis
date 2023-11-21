@@ -18,7 +18,7 @@ def predict_inflation():
     n_steps_out = 6
     root_path = Path(os.getcwd())
     data_path = root_path / 'data' / 'merged_data.csv'
-    ckpt_path = root_path / 'cache' / 'LSTM.keras'
+    ckpt_path = root_path / 'src' / 'model_cache' / 'LSTM.keras'
     
     #  6(n_steps_out) length list 
     train_pred = get_prediction_train(n_steps_in, n_steps_out, data_path, ckpt_path)

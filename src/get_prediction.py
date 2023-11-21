@@ -10,7 +10,7 @@ def get_prediction_train(n_steps_in, n_steps_out, data_path, ckpt_path):
     X_train, _ = split_sequences(train, n_steps_in, n_steps_out)
     
     train_pred = []
-    model = keras.models.load_model(ckpt_path / 'LSTM.keras')
+    model = keras.models.load_model(ckpt_path)
     preds = model.predict(X_train)
     
     for i, pred in enumerate(preds):
