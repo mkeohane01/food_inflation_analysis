@@ -23,6 +23,8 @@ def create_dataset(tables):
 
     merged_df.rename({'real-price':'dow_jones_real-price'}, axis=1,inplace=True)
 
+    # merged_df = pd.merge(merged_df, dfs['news_sentiments'], on='Date', how='outer')
+
     # check the data types of the columns
     print(merged_df['Date'].dtype)
 
