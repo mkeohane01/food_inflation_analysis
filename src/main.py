@@ -13,7 +13,7 @@ import os
 
 # funciton to predict 6 months of inflation rates
 def predict_inflation():
-    
+    # params to get prediction
     n_steps_in = 24
     n_steps_out = 6
     root_path = Path(os.getcwd())
@@ -24,16 +24,16 @@ def predict_inflation():
     train_pred = get_prediction_train(n_steps_in, n_steps_out, data_path, ckpt_path)
     test_pred, future_pred = get_prediction_test_future(n_steps_in, n_steps_out, data_path, ckpt_path)
     
-    # create dummy function to return df with index as month time series starting in 2023 and predicted rates
+    # create df with index as month time series starting in 2023-10 and future predicted rates
     future_data = pd.DataFrame()
     future_data['Date'] = pd.date_range(start='2023-10-01', periods=6, freq='MS')
     future_data['predicted_rates'] = future_pred
-    # return the df with index as Date and predicted rates as values
-    # create dummy function to return df with index as month time series starting in 2023 and predicted rates
+
+    # create df with index as month time series starting in 2023-4 and test predicted rates
     pred_data = pd.DataFrame()
     pred_data['Date'] = pd.date_range(start='2023-04-01', periods=6, freq='MS')
     pred_data['predicted_rates'] = test_pred
-    # predict test data
+    # create df for predicted on train data
     train_len = 387
     train_pred = pd.DataFrame()
     train_pred['Date'] = pd.date_range(start='1991-01-01', periods=train_len, freq='MS')
@@ -124,11 +124,9 @@ if st.button('Predict Food Inflation Rates'):
                     yaxis_title='Inflation Rate (CPI)')
 
     # Display MSE
-    st.text(f'Test - Mean Squared Error: {mse_test:.2f}')
-    st.text(f'Train - Mean Squared Error: {mse_train:.2f}')
+    st.text(f'Mean Squared Error: Test - {mse_test:.2f} | Train - {mse_train:.2f}')
     # Display MAPE
-    st.text(f'Test - Mean Absolute Percentage Error: {mape_test:.2f}')
-    st.text(f'Train - Mean Absolute Percentage Error: {mape_train:.2f}')
+    st.text(f'Mean Absolute Percentage Error: Test - {mape_test:.2f} | Train - {mape_train:.2f}')
 
     # show the graph
     graph_placeholder.plotly_chart(updated_fig, use_container_width=True)
