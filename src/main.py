@@ -38,7 +38,7 @@ def predict_inflation():
     # create df for predicted on train data
     train_len = len(train_prediction)
     train_pred = pd.DataFrame()
-    train_pred['Date'] = pd.date_range(start='1993-01-01', periods=train_len, freq='MS')
+    train_pred['Date'] = pd.date_range(start='1994-09-01', periods=train_len, freq='MS')
     train_pred['predicted_rates'] = train_prediction
     return pred_data, future_data, train_pred
 
